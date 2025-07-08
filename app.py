@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, send_from_directory, redirect
+from flask import Flask, request, jsonify, redirect, send_from_directory
 from flask_dance.contrib.google import make_google_blueprint, google
 from flask_cors import CORS
 from dotenv import load_dotenv
@@ -45,7 +45,7 @@ def me():
     resp = google.get("/oauth2/v2/userinfo")
     if not resp.ok:
         return jsonify({"error": "Failed to fetch user info"}), 500
-    return redirect("https://app-test-project.onrender.com/")
+    return redirect("https://app-test-project.onrender.com/") 
 
 # ✅ OAuth - Logout
 @app.route("/logout")
