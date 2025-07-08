@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify, send_from_directory, redirect
 from flask_dance.contrib.google import make_google_blueprint, google
 from flask_cors import CORS
 from dotenv import load_dotenv
