@@ -25,7 +25,7 @@ google_bp = make_google_blueprint(
         "https://www.googleapis.com/auth/userinfo.email",
         "https://www.googleapis.com/auth/userinfo.profile"
     ],
-    🔴 redirect_to="home"  # 🔴 changed from "me" to "home" to redirect to frontend after login
+    redirect_to="home"  
 )
 app.register_blueprint(google_bp, url_prefix="/login")
 
@@ -47,10 +47,10 @@ def me():
         return jsonify({"error": "Failed to fetch user info"}), 500
     return jsonify(resp.json())
 
-# 🔴 New route: Redirects to frontend root after login
+# New route: Redirects to frontend root after login
 @app.route("/home")
 def home():
-    🔴 return redirect("/")  # 🔴 new route to send user to frontend root after OAuth login
+     return redirect("/")  #  new route to send user to frontend root after OAuth login
 
 # ✅ OAuth - Logout
 @app.route("/logout")
