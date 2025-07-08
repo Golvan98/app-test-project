@@ -45,7 +45,7 @@ def me():
     resp = google.get("/oauth2/v2/userinfo")
     if not resp.ok:
         return jsonify({"error": "Failed to fetch user info"}), 500
-    return jsonify(resp.json())
+    return redirect("https://app-test-project.onrender.com/")
 
 # ✅ OAuth - Logout
 @app.route("/logout")
