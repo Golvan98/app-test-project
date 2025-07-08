@@ -7,8 +7,8 @@ function App() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:5000/me", {
-      credentials: "include"
+    fetch("/me", {
+      credentials: "include",
     })
       .then((res) => res.json())
       .then((data) => {
@@ -18,13 +18,13 @@ function App() {
 
   const handleConvert = async () => {
     try {
-      const res = await fetch("http://localhost:5000/convert", {
+      const res = await fetch("/convert", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         credentials: "include",
-        body: JSON.stringify({ value: meters })
+        body: JSON.stringify({ value: meters }),
       });
 
       if (!res.ok) throw new Error("Conversion failed");
@@ -38,12 +38,17 @@ function App() {
   };
 
   return (
-    <div className="App" style={{ padding: "2rem", fontFamily: "Arial, sans-serif" }}>
+    <div
+      className="App"
+      style={{ padding: "2rem", fontFamily: "Arial, sans-serif" }}
+    >
       <h2>Unit Converter (Meters → Feet)</h2>
 
       {user ? (
         <>
-          <p>Welcome, {user.name} ({user.email})</p>
+          <p>
+            Welcome, {user.name} ({user.email})
+          </p>
 
           <div style={{ marginBottom: "1rem" }}>
             <input
@@ -60,10 +65,10 @@ function App() {
           {error && <p style={{ color: "red" }}>{error}</p>}
 
           <br />
-          <a href="http://localhost:5000/logout">Logout</a>
+          <a href="/logout">Logout</a>
         </>
       ) : (
-        <a href="http://localhost:5000/login/google">Login with Google</a>
+        <a href="/login/google">Login with Google</a>
       )}
     </div>
   );
