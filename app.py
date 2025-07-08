@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_dance.contrib.google import make_google_blueprint, google
 from flask_cors import CORS
 from dotenv import load_dotenv
@@ -6,11 +6,14 @@ import os
 
 load_dotenv()
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='client/build', static_url_path='')
 app.secret_key = os.getenv("SECRET_KEY")
-CORS(app, origins=["http://localhost:3000"], supports_credentials=True)
+CORS(app, origins=[
+    "http://localhost:3000", 
+    "https://your-frontend.onrender.com"  # ⬅️ Update to your deployed frontend URL
+], supports_credentials=True)
 
-# ✅ Updated Google OAuth setup with correct scopes
+# ✅ Google OAuth setup
 google_bp = make_google_blueprint(
     client_id=os.getenv("GOOGLE_CLIENT_ID"),
     client_secret=os.getenv("GOOGLE_CLIENT_SECRET"),
@@ -44,6 +47,11 @@ def logout():
     google_bp.token = None
     return jsonify({"message": "Logged out"}), 200
 
-@app.route("/")
-def home():
-    return jsonify({"message": "Flask API running"})
+# ✅ Serve React frontend
+@app.route("/", defaults={"path": ""})
+@app.route("/<path:path>")
+def serve_react(path):
+    if path != "" and os.path.exists(f"client/build/{path}"):
+        return send_from_directory("client/build", path)
+    else:
+        return send_from_directory("client/build", "index.html")
