@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "./App.css";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -38,38 +39,35 @@ function App() {
   };
 
   return (
-    <div
-      className="App"
-      style={{ padding: "2rem", fontFamily: "Arial, sans-serif" }}
-    >
-      <h2>Unit Converter (Meters → Feet)</h2>
+    <div className="App">
+      <div className="card">
+        <h2 className="title">Unit Converter (Meters → Feet)</h2>
 
-      {user ? (
-        <>
-          <p>
-            Welcome, {user.name} ({user.email})
-          </p>
+        {user ? (
+          <>
+            <p className="welcome">
+              Welcome, <strong>{user.name}</strong> ({user.email})
+            </p>
 
-          <div style={{ marginBottom: "1rem" }}>
-            <input
-              type="number"
-              value={meters}
-              onChange={(e) => setMeters(e.target.value)}
-              placeholder="Enter meters"
-              style={{ marginRight: "1rem" }}
-            />
-            <button onClick={handleConvert}>Convert</button>
-          </div>
+            <div className="input-group">
+              <input
+                type="number"
+                value={meters}
+                onChange={(e) => setMeters(e.target.value)}
+                placeholder="Enter meters"
+              />
+              <button onClick={handleConvert}>Convert</button>
+            </div>
 
-          {feet !== null && <p>{meters} meters = {feet} feet</p>}
-          {error && <p style={{ color: "red" }}>{error}</p>}
+            {feet !== null && <p className="result">{meters} meters = {feet} feet</p>}
+            {error && <p className="error">{error}</p>}
 
-          <br />
-          <a href="/logout">Logout</a>
-        </>
-      ) : (
-        <a href="/login/google">Login with Google</a>
-      )}
+            <a className="link" href="/logout">Logout</a>
+          </>
+        ) : (
+          <a className="link" href="/login/google">Login with Google</a>
+        )}
+      </div>
     </div>
   );
 }
