@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify
 from flask_dance.contrib.google import make_google_blueprint, google
 from flask_cors import CORS
 from dotenv import load_dotenv
@@ -6,17 +6,11 @@ import os
 
 load_dotenv()
 
-# ✅ Set up Flask with static files from React build
-app = Flask(__name__, static_folder='client/build', static_url_path='')
+app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
+CORS(app, origins=["http://localhost:3000"], supports_credentials=True)
 
-# ✅ Allow frontend requests (update URL to your Render app)
-CORS(app, origins=[
-    "http://localhost:3000",
-    "https://app-test-project-5.onrender.com"
-], supports_credentials=True)
-
-# ✅ Google OAuth blueprint setup
+# ✅ Updated Google OAuth setup with correct scopes
 google_bp = make_google_blueprint(
     client_id=os.getenv("GOOGLE_CLIENT_ID"),
     client_secret=os.getenv("GOOGLE_CLIENT_SECRET"),
@@ -29,7 +23,6 @@ google_bp = make_google_blueprint(
 )
 app.register_blueprint(google_bp, url_prefix="/login")
 
-# ✅ API Route - Unit Conversion
 @app.route("/convert", methods=["POST"])
 def convert():
     data = request.get_json()
@@ -37,7 +30,6 @@ def convert():
     feet = meters * 3.28084
     return jsonify({"feet": round(feet, 2)})
 
-# ✅ OAuth - Get User Info
 @app.route("/me")
 def me():
     if not google.authorized:
@@ -47,17 +39,11 @@ def me():
         return jsonify({"error": "Failed to fetch user info"}), 500
     return jsonify(resp.json())
 
-# ✅ OAuth - Logout
 @app.route("/logout")
 def logout():
     google_bp.token = None
     return jsonify({"message": "Logged out"}), 200
 
-# ✅ Serve React frontend (fix for Render platform)
-@app.route("/", defaults={"path": ""})
-@app.route("/<path:path>")
-def serve_react(path):
-    try:
-        return send_from_directory(app.static_folder, path)
-    except:
-        return send_from_directory(app.static_folder, "index.html")
+@app.route("/")
+def home():
+    return jsonify({"message": "Flask API running"})
