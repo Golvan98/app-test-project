@@ -56,7 +56,7 @@ def home():
 @app.route("/logout")
 def logout():
     google_bp.token = None
-    return jsonify({"message": "Logged out"}), 200
+    return redirect("/") 
 
 # ✅ Serve React frontend (Render-compatible)
 @app.route("/", defaults={"path": ""})
