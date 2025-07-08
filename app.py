@@ -13,7 +13,7 @@ app.secret_key = os.getenv("SECRET_KEY")
 # ✅ Allow frontend requests (update URL to your Render app)
 CORS(app, origins=[
     "http://localhost:3000",
-    "https://app-test-project-5.onrender.com"
+    "https://app-test-project.onrender.com"
 ], supports_credentials=True)
 
 # ✅ Google OAuth blueprint setup
